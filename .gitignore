@@ -14,3 +14,6 @@ Thumbs.db
 # System specific checkpoint data (if any local backups are created)
 .vscode/
 .idea/
+
+# Ignore raw local datasets
+data/*.csv
