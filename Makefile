@@ -15,14 +15,14 @@ help:
 # Task 1: Environment Setup & Data Ingestion
 setup:
 	@echo "⚙️ Initializing workspace dependencies..."
-	pip install -r requirements.txt
+	pip install -r requirements.txt gdown
 	@echo "📂 Constructing isolated data directory scaffolding..."
 	mkdir -p data
-	@echo "📥 Downloading verified production datasets from benchmark mirrors..."
-	# Downloads the exact pre-processed weather dataset used in the DLinear paper
-	curl -L -o data/weather.csv "https://raw.githubusercontent.com/thuml/Time-Series-Library/main/dataset/weather/weather.csv"
-	# Downloads the exact pre-processed exchange rate dataset
-	curl -L -o data/exchange_rate.csv "https://raw.githubusercontent.com/thuml/Time-Series-Library/main/dataset/exchange_rate/exchange_rate.csv"
+	@echo "📥 Downloading verified production datasets from Google Drive mirror..."
+	# Source Folder Link: https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy
+	# Using gdown to securely ingest datasets directly from the shared benchmark drive
+	gdown --id 1wN_r98w9mHIsHogDsk7tSnt7Y0ImsyN8 -O data/weather.csv --no-cookies
+	gdown --id 1nuMUIADOc1BNN-uDO2N7HreYl7q6qf8H -O data/exchange_rate.csv --no-cookies
 	@echo "✅ Infrastructure and dataset layers are fully staged!"
 
 # Task 2: Offline Model Training (Production Run)
