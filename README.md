@@ -179,3 +179,112 @@ Contiguous blocks of observations are removed from the input sequence to simulat
 Together, the forecasting models and Operational Fault Injection Matrix enable systematic evaluation of forecasting robustness under realistic deployment conditions, providing insight into how predictive performance degrades as operational environments become increasingly imperfect.
 
 
+# 🚀 Quick Start
+
+The benchmark is designed to be fully reproducible from a clean environment. The entire workflow—from dependency installation to model training, robustness evaluation, and result generation—is automated through a lightweight local pipeline.
+
+## Execution Workflow
+
+### 1. Environment Setup
+
+Install project dependencies and initialize the local environment.
+
+```bash
+make setup
+```
+
+### 2. Train Forecasting Models
+
+Train all forecasting models on the clean datasets used throughout the benchmark.
+
+```bash
+make train
+```
+
+### 3. Run Robustness Benchmark
+
+Execute the full Operational Fault Injection Matrix across all supported models, datasets, fault types, and severity levels.
+
+```bash
+make benchmark
+```
+
+This stage performs:
+
+* Streaming inference simulation
+* Fault injection
+* Robustness evaluation
+* Metric aggregation
+* Report generation
+
+### 4. Clean Generated Artifacts
+
+Remove intermediate results, cached artifacts, and model checkpoints.
+
+```bash
+make clean
+```
+
+## Reproducing Results
+
+To reproduce the complete benchmark from scratch:
+
+```bash
+make setup
+make train
+make benchmark
+```
+
+Results, visualizations, and summary reports will be generated automatically within the `results/` directory.
+
+## Repository Structure
+
+```text
+forecast-robustness-benchmark/
+│
+├── data/
+│   ├── weather.csv
+│   └── exchange_rate.csv
+│
+├── src/
+│   ├── models/
+│   │   ├── dlinear.py
+│   │   ├── linear_v2.py
+│   │   ├── naive_persistence.py
+│   │   └── window_repeat.py
+│   │
+│   ├── data_loader.py
+│   │
+│   ├── simulator.py
+│
+├── results/
+│   ├── summary.md
+│   ├── figures/
+│
+├── generate_report.py 
+│
+├── benchmark.py
+│
+├── requirements.txt
+│
+├── Makefile
+└── README.md
+```
+
+### Directory Overview
+
+| Directory              | Purpose                                                  |
+| ---------------------- | -------------------------------------------------------- |
+| `data/`                | Benchmark datasets used for training and evaluation      |
+| `src/models/`          | Core forecasting model implementations                   |
+| `src/data_loader.py`   | Data ingestion pipeline                                  | 
+| `src/simulator.py`     | Operational Fault Injection Matrix implementation        |
+| `benchmark.py`         | Streaming inference simulation engine                    |
+| `train.py`             | Offline model training pipeline                          |
+| `generate_report.py`   | Result aggregation script                                |
+| `results/`             | Dedicated output storage for generated markdown reports  |
+
+```
+```
+
+
