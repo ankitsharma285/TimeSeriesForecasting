@@ -18,11 +18,10 @@ setup:
 	pip install -r requirements.txt gdown
 	@echo "📂 Constructing isolated data directory scaffolding..."
 	mkdir -p data
-	@echo "📥 Downloading verified production datasets from Google Drive mirror..."
-	# Source Folder Link: https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy
-	# Using gdown to securely ingest datasets directly from the shared benchmark drive
-	gdown --id 1wN_r98w9mHIsHogDsk7tSnt7Y0ImsyN8 -O data/weather.csv --no-cookies
-	gdown --id 1nuMUIADOc1BNN-uDO2N7HreYl7q6qf8H -O data/exchange_rate.csv --no-cookies
+	@echo "📥 Downloading verified production datasets from public Google Drive folder..."
+	# Public Folder Source: https://drive.google.com/drive/folders/1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy
+	gdown --id 1zXwE3e56vQunH5-gX4VAn7qjS9YjT_QW -O data/weather.csv
+	gdown --id 1S_qE6907gR2e2CidN7zZ90OAgp2_I5D7 -O data/exchange_rate.csv
 	@echo "✅ Infrastructure and dataset layers are fully staged!"
 
 # Task 2: Offline Model Training (Production Run)
