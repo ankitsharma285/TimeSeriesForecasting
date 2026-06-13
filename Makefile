@@ -7,27 +7,18 @@
 # Default task when running 'make' with no arguments
 help:
 	@echo "Available commands:"
-	@echo "  make setup     - Install dependencies, ingest raw datasets, and normalize paths"
-	@echo "  make train     - Train neural models (dlinear, linear_v2) on clean data"
+	@echo "  make setup     - Install dependencies and prepare workspace"
+	@echo "  make train     - Train neural models (dlinear, linear_v2) on local clean data"
 	@echo "  make benchmark - Run the full robust evaluation matrix across all faults"
 	@echo "  make clean     - Flush old JSON results and checkpoints"
 
-# Task 1: Environment Setup, Data Ingestion, & Path Normalization
+# Task 1: Environment Setup
 setup:
 	@echo "⚙️ Initializing workspace dependencies..."
-	pip install -r requirements.txt gdown
-	@echo "📂 Constructing isolated data directory scaffolding..."
+	pip install -r requirements.txt
+	@echo "📂 Ensuring isolated data directory scaffolding exists..."
 	mkdir -p data
-	@echo "📥 Downloading verified production datasets from public Google Drive folder..."
-	gdown --folder 1ZOYpTUa82_jCcxIdTmyr0LXQfvaM9vIy -O data/ --remaining-ok
-	@echo "🚚 Normalizing nested Autoformer directory structure..."
-	# Safely hoist nested target matrices to root data/ directory if they exist
-	@if [ -f data/Autoformer/weather/weather.csv ]; then mv data/Autoformer/weather/weather.csv data/; fi
-	@if [ -f data/Autoformer/exchange_rate/exchange_rate.csv ]; then mv data/Autoformer/exchange_rate/exchange_rate.csv data/; fi
-	@echo "🧹 Sanitizing auxiliary nested files and archives..."
-	# Remove structural artifacts to match local repository assumptions
-	rm -rf data/Autoformer/ data/all_six_datasets.zip
-	@echo "✅ Infrastructure and dataset layers are fully staged at root data/ folder!"
+	@echo "✅ Infrastructure layers are fully staged!"
 
 # Task 2: Offline Model Training (Production Run)
 train:
