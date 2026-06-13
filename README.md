@@ -291,7 +291,7 @@ forecast-robustness-benchmark/
 ## Identifying the Dominant Failure Mode
 To determine which operational fault poses the greatest risk to forecasting systems, DLinear was evaluated under Gaussian noise, spike anomalies, distribution drift, and missing observations at equivalent severity levels.
 
-![image][results/plots/dlinear_robustness_corruption_types.png]
+![image](results/plots/dlinear_robustness_corruption_types.png)
         Relative Degradation Table
 | Corruption Type |    MAE | Relative Increase |
 | --------------- | -----: | ----------------: |
@@ -306,7 +306,7 @@ Observation: Missing observations were the dominant failure mode across all expe
 ## 📈 Visual Analysis: Robustness Trajectories Under Missing Data
 1. Exchange-Rate Forecasting Analysis
 
-![image][results/plots/exchange_rate_missing_observations.png]
+![image](results/plots/exchange_rate_missing_observations.png)
 **Figure 1.**
 MAE degradation as missing-data severity increases on the Exchange-Rate dataset. All forecasting models experience substantial performance degradation as observations are removed. Model rankings change under corruption: while Naive Persistence performs strongly under clean conditions, Linear_v2 exhibits the greatest robustness at higher corruption levels. This result highlights that clean-data accuracy does not necessarily predict resilience under operational failures.
 
@@ -323,7 +323,7 @@ MAE degradation as missing-data severity increases on the Exchange-Rate dataset.
 All models experience substantial degradation under severe missing-data corruption. While Naive Persistence performs best under clean conditions, it exhibits the largest relative degradation. Linear_v2 demonstrates the strongest robustness characteristics among the learned models, achieving the lowest MAE under high corruption.
 
 2. Weather Forecasting Analysis 
- ![image][results/plots/weather_missing_observations_mae.png]
+ ![image](results/plots/weather_missing_observations_mae.png)
 
 **Figure 2.**
 Figure. MAE degradation as missing-data severity increases on the Weather dataset. All forecasting models exhibit monotonic performance degradation as observations are removed. DLinear experiences the largest increase in error, while Linear_v2 and Naive Persistence demonstrate stronger robustness under severe data loss. This highlights the sensitivity of decomposition-based forecasting architectures to disruptions in temporal continuity.
