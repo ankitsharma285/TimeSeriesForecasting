@@ -138,7 +138,7 @@ A direct linear forecasting model that maps historical observations to future ho
 
 A classical forecasting baseline that assumes the most recently observed value will persist into the future.
 
-[X_{t+h} = X_t]
+$$X_{t+h} = X_t$$
 
 Despite its simplicity, persistence is often highly competitive on slowly changing time-series and serves as an important reference point.
 
@@ -259,7 +259,7 @@ forecast-robustness-benchmark/
 │
 ├── results/
 │   ├── summary.md
-│   ├── figures/
+│   ├── plots/
 │
 ├── generate_report.py 
 │
