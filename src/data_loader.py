@@ -21,14 +21,21 @@ class TimeSeriesDatasetLoader:
         # 1. Parse raw dataframe
         df = pd.read_csv(file_path)
         
-        # 2. Isolate numeric features (drop date string column)
-        if 'date' in df.columns:
-            df = df.drop(columns=['date'])
+        # 2. Isolate numeric features (case-insensitive date column dropping)
+        columns_to_drop = [col for col in df.columns if col.lower() == 'date']
+        if columns_to_drop:
+            df = df.drop(columns=columns_to_drop)
+            
+        # Clean up any lingering non-numeric artifacts or empty trailing columns
+        df = df.select_dtypes(include=[np.number])
         
         data_matrix = df.values.astype(np.float32)
 
         # 3. Time-Series Chronological Splits
         num_samples = len(data_matrix)
+        if num_samples == 0:
+            raise ValueError(f"The loaded dataset matrix from {filename} is completely empty.")
+
         train_end = int(num_samples * train_ratio)
         val_end = int(num_samples * (train_ratio + val_ratio))
 
@@ -36,9 +43,19 @@ class TimeSeriesDatasetLoader:
         val_data = data_matrix[train_end:val_end]
         test_data = data_matrix[val_end:]
 
-        # 4. Standard Scaler calculated STRICTLY from Training Data
+        # 🚨 Defensive Guard: Verify splits actually contain arrays
+        if len(train_data) == 0:
+            raise ValueError(
+                f"Calculated training split contains 0 samples. Total rows: {num_samples}, "
+                f"Train Ratio: {train_ratio}. Verify data source or ratios."
+            )
+
+        # 4. Standard Scaler calculated STRICTLY from Training Data to avoid leakage
         mean = np.mean(train_data, axis=0)
-        std = np.std(train_data, axis=0) + 1e-5
+        std = np.std(train_data, axis=0)
+        
+        # Guard against zero-variance features (constant values) to avoid divide-by-zero anomalies
+        std = np.where(std == 0, 1e-5, std)
 
         # Normalize all splits using training scales
         norm_train = (train_data - mean) / std
