@@ -16,8 +16,6 @@ help:
 setup:
 	@echo "⚙️ Initializing workspace dependencies..."
 	pip install -r requirements.txt
-	@echo "📂 Ensuring isolated data directory scaffolding exists..."
-	mkdir -p data
 	@echo "✅ Infrastructure layers are fully staged!"
 
 # Task 2: Offline Model Training (Production Run)
