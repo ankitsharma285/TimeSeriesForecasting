@@ -15,5 +15,4 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Ignore raw local datasets
-data/*.csv
+
