@@ -150,9 +150,13 @@ A historical-pattern baseline that repeats the most recent context window direct
 
 ## Operational Fault Injection Matrix
 
-Forecasting systems deployed in production rarely operate on perfect data. To evaluate robustness under realistic deployment conditions, the benchmark injects controlled operational faults into the input stream before inference.
+Forecasting systems deployed in production rarely operate on perfect data. To evaluate robustness under realistic deployment conditions, the benchmark injects controlled operational faults into the input stream before inference. Each fault is evaluated across multiple severity levels, allowing robustness degradation to be quantified and compared across forecasting models.
 
-Each fault is evaluated across multiple severity levels, allowing robustness degradation to be quantified and compared across forecasting models.
+* **Clean Baseline (`none`):** No corruption is applied to the input sequence. This scenario establishes the reference performance for each forecasting model.
+* **Gaussian Noise (`gaussian`):** Random high-frequency noise is added to the input sequence to simulate sensor jitter, measurement uncertainty, and noisy observations.
+* **Spike Anomalies (`spike`):** Transient high-magnitude perturbations are injected into the input stream to simulate outliers, abnormal events, or sudden operational disruptions.
+* **Distribution Drift (`drift`):** Gradual shifts are introduced into the data distribution to emulate changing environmental conditions, sensor recalibration effects, or evolving market behavior.
+* **Missing Observations (`missing`):** Contiguous blocks of observations are removed from the input sequence to simulate network outages, telemetry loss, delayed data arrival, or incomplete sensor reporting.
 
 ### Clean Baseline (`none`)
 
@@ -341,7 +345,7 @@ Figure. MAE degradation as missing-data severity increases on the Weather datase
 
 Weather forecasting exhibits substantially lower degradation than exchange-rate forecasting under identical corruption levels. Linear_v2 again demonstrates the strongest robustness profile among the neural forecasting architectures, while DLinear experiences the largest relative performance decline.
 
-###  Combined Robustness Ranking (Missing Severity = 0.3)
+###  🌍 Combined Robustness Rankings (Missing Severity = 0.3)
 
 | Dataset       | Most Robust       | 2nd       | 3rd               | Least Robust  |
 | ------------- | ----------------- | --------- | ----------------- | ------------- |
@@ -352,7 +356,7 @@ Weather forecasting exhibits substantially lower degradation than exchange-rate 
 
 A notable finding is that model robustness is dataset-dependent. On the exchange-rate dataset, Linear_v2 emerges as the most resilient architecture under severe missing-data corruption. On the weather dataset, the simple Persistence baseline achieves the lowest forecasting error, suggesting that slowly evolving physical systems may benefit more from local continuity than from complex temporal decomposition.
 
-## Key Findings
+## 🎯 Key Findings Summary
 
 1. **Missing observations were the dominant failure mode.**
    Across both datasets, missing data produced substantially larger performance degradation than Gaussian noise, spike anomalies, or moderate distribution drift.
@@ -369,7 +373,7 @@ A notable finding is that model robustness is dataset-dependent. On the exchange
 5. **Robustness and accuracy should be evaluated separately.**
    Clean-data forecasting performance was not a reliable predictor of behavior under operational failures. Production forecasting systems should therefore be assessed on both predictive accuracy and robustness.
    
-## Future Work
+## 🔮 Future Work
 
 * Online model adaptation under distribution drift
 * Automated drift detection and alerting mechanisms
