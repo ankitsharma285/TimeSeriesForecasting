@@ -27,14 +27,23 @@ train:
 	PYTHONPATH=. python train.py --model dlinear --dataset exchange_rate.csv --epochs 20 --patience 3
 	@echo "💾 Production training phase completed. Optimized weights saved."
 
-# Task 3: Streaming Simulation & Multi-Variable Fault Ingestion
+# Task 3: The Step C Automation Matrix (Comprehensive Sweep)
 benchmark:
-	@echo "🧪 Launching streaming adversarial operational benchmark..."
-	PYTHONPATH=. python benchmark.py --model linear_v2 --dataset weather.csv --noise drift --severity 2
-	PYTHONPATH=. python benchmark.py --model dlinear --dataset weather.csv --noise drift --severity 2
-	PYTHONPATH=. python benchmark.py --model linear_v2 --dataset exchange_rate.csv --noise spike --severity 3
-	PYTHONPATH=. python benchmark.py --model dlinear --dataset exchange_rate.csv --noise spike --severity 3
-	@echo "📊 Aggregating multi-variable result vectors..."
+	@echo "🚀 Initiating full sequential data corruption streaming sweep..."
+	@mkdir -p results
+	@for dataset in weather.csv exchange_rate.csv; do \
+		for model in naive_persistence window_repeat linear_v2 dlinear; do \
+			echo "Running benchmark for $$model on $$dataset (Clean Base)..."; \
+			PYTHONPATH=. python benchmark.py --model $$model --dataset $$dataset --noise none --severity 0.0; \
+			for noise in gaussian missing spike drift; do \
+				for severity in 0.1 0.3; do \
+					echo "Running benchmark for $$model on $$dataset | Noise: $$noise | Severity: $$severity"; \
+					PYTHONPATH=. python benchmark.py --model $$model --dataset $$dataset --noise $$noise --severity $$severity; \
+				done \
+			done \
+		done \
+	done
+	@echo "🏁 Sweep completed. Packaging visual presentation layer..."
 	PYTHONPATH=. python generate_report.py
 
 # Task 4: System Sanitation
