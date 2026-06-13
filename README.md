@@ -286,5 +286,96 @@ forecast-robustness-benchmark/
 
 ```
 ```
+# Results 
 
+## Identifying the Dominant Failure Mode
+To determine which operational fault poses the greatest risk to forecasting systems, DLinear was evaluated under Gaussian noise, spike anomalies, distribution drift, and missing observations at equivalent severity levels.
+
+![image][results/plots/dlinear_robustness_corruption_types.png]
+        Relative Degradation Table
+| Corruption Type |    MAE | Relative Increase |
+| --------------- | -----: | ----------------: |
+| Clean           | 0.1131 |                0% |
+| Gaussian (0.3)  | 0.1145 |             +1.2% |
+| Spike (0.3)     | 0.1181 |             +4.4% |
+| Drift (0.3)     | 0.1227 |             +8.5% |
+| Missing (0.3)   | 0.4585 |       **+305.4%** |
+
+Observation: Missing observations were the dominant failure mode across all experiments. While Gaussian noise, spike anomalies, and moderate drift produced only minor performance degradation, missing data increased forecasting error by more than 300% on the Exchange-Rate dataset, highlighting data availability as a significantly greater operational risk than noisy measurements.
+
+## 📈 Visual Analysis: Robustness Trajectories Under Missing Data
+1. Exchange-Rate Forecasting Analysis
+
+![image][results/plots/exchange_rate_missing_observations.png]
+**Figure 1.**
+MAE degradation as missing-data severity increases on the Exchange-Rate dataset. All forecasting models experience substantial performance degradation as observations are removed. Model rankings change under corruption: while Naive Persistence performs strongly under clean conditions, Linear_v2 exhibits the greatest robustness at higher corruption levels. This result highlights that clean-data accuracy does not necessarily predict resilience under operational failures.
+
+### Key Observation
+
+        Relative Degradation Table — Exchange Rate Dataset (Missing Data @ 30%)
+| Model             | Clean MAE | Missing 30% MAE | Absolute Increase | Relative Increase |
+| ----------------- | --------: | --------------: | ----------------: | ----------------: |
+| DLinear           |    0.1131 |          0.4585 |           +0.3454 |       **+305.4%** |
+| Linear_v2         |    0.1167 |          0.4509 |           +0.3342 |       **+286.4%** |
+| Naive Persistence |    0.1018 |          0.4956 |           +0.3938 |       **+386.8%** |
+| Window Repeat     |    0.1472 |          0.5291 |           +0.3819 |       **+259.4%** |
+
+All models experience substantial degradation under severe missing-data corruption. While Naive Persistence performs best under clean conditions, it exhibits the largest relative degradation. Linear_v2 demonstrates the strongest robustness characteristics among the learned models, achieving the lowest MAE under high corruption.
+
+2. Weather Forecasting Analysis 
+ ![image][results/plots/weather_missing_observations_mae.png]
+
+**Figure 2.**
+Figure. MAE degradation as missing-data severity increases on the Weather dataset. All forecasting models exhibit monotonic performance degradation as observations are removed. DLinear experiences the largest increase in error, while Linear_v2 and Naive Persistence demonstrate stronger robustness under severe data loss. This highlights the sensitivity of decomposition-based forecasting architectures to disruptions in temporal continuity.
+
+### Key Observation
+
+        Relative Degradation Table — Weather Dataset (Missing Data @ 30%)
+| Model             | Clean MAE | Missing 30% MAE | Absolute Increase | Relative Increase |
+| ----------------- | --------: | --------------: | ----------------: | ----------------: |
+| DLinear           |    0.1536 |          0.3375 |           +0.1839 |       **+119.7%** |
+| Linear_v2         |    0.1590 |          0.2873 |           +0.1283 |        **+80.7%** |
+| Naive Persistence |    0.1348 |          0.2762 |           +0.1414 |       **+104.9%** |
+| Window Repeat     |    0.2023 |          0.3239 |           +0.1216 |        **+60.1%** |
+
+Weather forecasting exhibits substantially lower degradation than exchange-rate forecasting under identical corruption levels. Linear_v2 again demonstrates the strongest robustness profile among the neural forecasting architectures, while DLinear experiences the largest relative performance decline.
+
+###  Combined Robustness Ranking (Missing Severity = 0.3)
+
+| Dataset       | Most Robust       | 2nd       | 3rd               | Least Robust  |
+| ------------- | ----------------- | --------- | ----------------- | ------------- |
+| Exchange Rate | Linear_v2         | DLinear   | Naive Persistence | Window Repeat |
+| Weather       | Naive Persistence | Linear_v2 | Window Repeat     | DLinear       |
+
+### Cross-Dataset Insight
+
+A notable finding is that model robustness is dataset-dependent. On the exchange-rate dataset, Linear_v2 emerges as the most resilient architecture under severe missing-data corruption. On the weather dataset, the simple Persistence baseline achieves the lowest forecasting error, suggesting that slowly evolving physical systems may benefit more from local continuity than from complex temporal decomposition.
+
+## Key Findings
+
+1. **Missing observations were the dominant failure mode.**
+   Across both datasets, missing data produced substantially larger performance degradation than Gaussian noise, spike anomalies, or moderate distribution drift.
+
+2. **Simple baselines remained highly competitive.**
+   Naive Persistence frequently matched or exceeded the performance of learned forecasting architectures, particularly on clean data and slowly evolving weather patterns.
+
+3. **DLinear was sensitive to disruptions in temporal continuity.**
+   While DLinear remained relatively stable under noise, spikes, and drift, it experienced significant degradation when contiguous observations were removed.
+
+4. **Model rankings changed under operational corruption.**
+   The strongest model under clean evaluation was not always the most robust model under deployment-like conditions, highlighting the importance of robustness testing beyond standard benchmark accuracy.
+
+5. **Robustness and accuracy should be evaluated separately.**
+   Clean-data forecasting performance was not a reliable predictor of behavior under operational failures. Production forecasting systems should therefore be assessed on both predictive accuracy and robustness.
+   
+## Future Work
+
+* Online model adaptation under distribution drift
+* Automated drift detection and alerting mechanisms
+* Evaluation of additional forecasting architectures (PatchTST, TimesNet, Informer, Autoformer)
+* Real-time streaming data ingestion and monitoring
+* Robust training strategies for missing observations and noisy inputs
+* Adaptive imputation techniques for incomplete time-series data
+* Expanded robustness benchmarks across additional datasets and forecasting horizons
+   
 
