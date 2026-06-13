@@ -28,18 +28,18 @@ setup:
 # Task 2: Offline Model Training (Production Run)
 train:
 	@echo "🔥 Starting high-capacity baseline neural model training (20 Epochs)..."
-	python train.py --model linear_v2 --dataset weather.csv --epochs 20 --patience 3
-	python train.py --model dlinear --dataset weather.csv --epochs 20 --patience 3
-	python train.py --model linear_v2 --dataset exchange_rate.csv --epochs 20 --patience 3
-	python train.py --model dlinear --dataset exchange_rate.csv --epochs 20 --patience 3
+	PYTHONPATH=. python train.py --model linear_v2 --dataset weather.csv --epochs 20 --patience 3
+	PYTHONPATH=. python train.py --model dlinear --dataset weather.csv --epochs 20 --patience 3
+	PYTHONPATH=. python train.py --model linear_v2 --dataset exchange_rate.csv --epochs 20 --patience 3
+	PYTHONPATH=. python train.py --model dlinear --dataset exchange_rate.csv --epochs 20 --patience 3
 	@echo "💾 Production training phase completed. Optimized weights saved."
 
 # Task 3: Streaming Simulation & Multi-Variable Fault Ingestion
 benchmark:
 	@echo "🧪 Launching streaming adversarial operational benchmark..."
-	python benchmark.py
+	PYTHONPATH=. python benchmark.py
 	@echo "📊 Aggregating multi-variable result vectors..."
-	python generate_report.py
+	PYTHONPATH=. python generate_report.py
 
 # Task 4: System Sanitation
 clean:
