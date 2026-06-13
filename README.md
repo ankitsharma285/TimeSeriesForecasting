@@ -126,6 +126,13 @@ The benchmark consists of two primary components:
 
 The framework evaluates both learned forecasting architectures and simple baseline methods to understand how model performance changes under operational stress.
 
+* **DLinear (`dlinear`):** A decomposition-based forecasting architecture that separates input sequences into trend and seasonal components before applying independent linear projections. DLinear serves as the primary neural forecasting model evaluated in this benchmark.
+* **Linear (`linear_v2`):** A direct linear forecasting model that maps historical observations to future horizons without explicit trend-seasonal decomposition. This model provides a lightweight neural baseline for comparison.
+* **Naive Persistence (`naive_persistence`):** A classical forecasting baseline that assumes the most recently observed value will persist into the future:
+  $$X_{t+h} = X_t$$
+  Despite its simplicity, persistence is often highly competitive on slowly changing time-series and serves as an important reference point.
+* **Window Repeat (`window_repeat`):** A historical-pattern baseline that repeats the most recent context window directly into the forecast horizon. This approach evaluates whether recurring local patterns alone can provide useful forecasts.
+
 ### DLinear (`dlinear`)
 
 A decomposition-based forecasting architecture that separates input sequences into trend and seasonal components before applying independent linear projections. DLinear serves as the primary neural forecasting model evaluated in this benchmark.
