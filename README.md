@@ -133,36 +133,6 @@ The framework evaluates both learned forecasting architectures and simple baseli
   Despite its simplicity, persistence is often highly competitive on slowly changing time-series and serves as an important reference point.
 * **Window Repeat (`window_repeat`):** A historical-pattern baseline that repeats the most recent context window directly into the forecast horizon. This approach evaluates whether recurring local patterns alone can provide useful forecasts.
 
-### DLinear (`dlinear`)
-
-A decomposition-based forecasting architecture that separates input sequences into trend and seasonal components before applying independent linear projections. DLinear serves as the primary neural forecasting model evaluated in this benchmark.
-
-### Linear (`linear_v2`)
-
-A direct linear forecasting model that maps historical observations to future horizons without explicit trend-seasonal decomposition. This model provides a lightweight neural baseline for comparison.
-
-### Naive Persistence (`naive_persistence`)
-
-A classical forecasting baseline that assumes the most recently observed value will persist into the future.
-
-$$X_{t+h} = X_t$$
-
-Despite its simplicity, persistence is often highly competitive on slowly changing time-series and serves as an important reference point.
-
-### Window Repeat (`window_repeat`)
-
-A historical-pattern baseline that repeats the most recent context window directly into the forecast horizon. This approach evaluates whether recurring local patterns alone can provide useful forecasts.
-
-## Operational Fault Injection Matrix
-
-Forecasting systems deployed in production rarely operate on perfect data. To evaluate robustness under realistic deployment conditions, the benchmark injects controlled operational faults into the input stream before inference. Each fault is evaluated across multiple severity levels, allowing robustness degradation to be quantified and compared across forecasting models.
-
-* **Clean Baseline (`none`):** No corruption is applied to the input sequence. This scenario establishes the reference performance for each forecasting model.
-* **Gaussian Noise (`gaussian`):** Random high-frequency noise is added to the input sequence to simulate sensor jitter, measurement uncertainty, and noisy observations.
-* **Spike Anomalies (`spike`):** Transient high-magnitude perturbations are injected into the input stream to simulate outliers, abnormal events, or sudden operational disruptions.
-* **Distribution Drift (`drift`):** Gradual shifts are introduced into the data distribution to emulate changing environmental conditions, sensor recalibration effects, or evolving market behavior.
-* **Missing Observations (`missing`):** Contiguous blocks of observations are removed from the input sequence to simulate network outages, telemetry loss, delayed data arrival, or incomplete sensor reporting.
-
 Together, the forecasting models and Operational Fault Injection Matrix enable systematic evaluation of forecasting robustness under realistic deployment conditions, providing insight into how predictive performance degrades as operational environments become increasingly imperfect.
 
 
