@@ -306,7 +306,8 @@ Observation: Missing observations were the dominant failure mode across all expe
 ## 📈 Visual Analysis: Robustness Trajectories Under Missing Data
 1. Exchange-Rate Forecasting Analysis
 
-![image](results/plots/exchange_rate_missing_observations.png)
+ ![image](results/plots/exchange_rate_missing_observations_mae.png)
+
 **Figure 1.**
 MAE degradation as missing-data severity increases on the Exchange-Rate dataset. All forecasting models experience substantial performance degradation as observations are removed. Model rankings change under corruption: while Naive Persistence performs strongly under clean conditions, Linear_v2 exhibits the greatest robustness at higher corruption levels. This result highlights that clean-data accuracy does not necessarily predict resilience under operational failures.
 
